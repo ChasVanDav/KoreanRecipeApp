@@ -1,33 +1,10 @@
 # 🍜 Korean Recipe App
 
-This is a Flask-based web application that scrapes **Korean recipe titles** from a CNN article and automatically fetches relevant **YouTube cooking videos**. Users can view recipe details, watch embedded videos, and explore metadata such as views, channel name, and publish date.
-
-## BEFORE
-
-![Homepage with list of recipes](static/images/homepage_screenshot.png)
-
-![Video for recipe title on click](static/images/video_screenshot.png)
-
-![Database Tables with Recent Data](static/images/database_screenshot.png)
-
-## AFTER
+This is a Flask-based web application that lists scraped **Korean recipe titles** from a CNN article and automatically fetches the related **YouTube cooking video** with the highest views.
 
 ![Homepage Top Image](static/images/homepage_after_1.png)
 
 ![Homepage Bottom Image](static/images/homepage_after_2.png)
-
-![Edit Screen](static/images/edit_screen.png)
-
-## BACKEND
-
-![Recipe Database Postman GET](static/images/database_get.png)
-
-![Image Database Postman GET](static/images/database_image_upload.png)
-
-## Next Steps:
-
-- refactor unit tests for updated code
-- consolidate CSS and refactor margins, padding, etc from % to em
 
 ## 🎯 Features
 
