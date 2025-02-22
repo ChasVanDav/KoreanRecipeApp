@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ recipe.recipe_title }}</title>
+  </head>
+  <body>
+    <h1>{{ recipe.recipe_title }}</h1>
+    <p>{{ recipe.recipe_content }}</p>
+
+    {% if recipe.video_url %}
+    <h3>Watch the video:</h3>
+    <iframe
+      width="560"
+      height="315"
+      src="https://www.youtube.com/embed/{{ recipe.video_id }}"
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+    {% else %}
+    <p>No video available.</p>
+    {% endif %}
+
+    <!-- Image display -->
+    {% if recipe.image_filename %}
+    <h3>Recipe Image</h3>
+    <img
+      src="{{ url_for('static', filename='images/' + recipe.image_filename) }}"
+      alt="Recipe Image"
+      style="max-width: 100%; height: auto"
+    />
+    {% else %}
+    <p>No image available.</p>
+    {% endif %}
+
+    <!-- Image Upload Form -->
+    <h3>Upload a new image for this recipe</h3>
+    <form
+      action="{{ url_for('upload_image', recipe_id=recipe.id) }}"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <input type="file" name="file" required />
+      <button type="submit">Upload</button>
+    </form>
+
+    <a href="/">Back to Search</a>
+  </body>
+</html>

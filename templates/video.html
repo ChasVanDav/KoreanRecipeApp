@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Video Details</title>
+    <!-- Link to styles.css -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Vanessa's Korean Kitchen</h1>
+    </header>
+
+    <section id="video-details">
+      <h2>{{ recipe.recipe_title }}</h2>
+      <!-- Display the recipe title -->
+
+      <!-- Debugging: Check if video_id is being passed -->
+      <p>Video ID: {{ video_id }}</p>
+
+      <!-- Video Details -->
+      <p><strong>Views:</strong> {{ video_metadata.viewCount }}</p>
+      <p><strong>Channel:</strong> {{ video_metadata.channelTitle }}</p>
+      <p><strong>Published on:</strong> {{ video_metadata.publishedAt }}</p>
+
+      <!-- Embed YouTube Video -->
+      <div>
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/{{ video_id }}"
+          frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          title="{{ recipe.recipe_title }}"
+        ></iframe>
+      </div>
+    </section>
+
+    <section id="return">
+      <a href="{{ url_for('home') }}">Back to List</a>
+    </section>
+  </body>
+</html>

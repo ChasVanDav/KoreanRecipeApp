@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Page Not Found</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 50px;
+      }
+      h1 {
+        font-size: 100px;
+        color: #ff6347;
+      }
+      p {
+        font-size: 24px;
+        color: #555;
+      }
+      a {
+        color: #0066cc;
+        text-decoration: none;
+      }
+      .error-message {
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>404</h1>
+    <p class="error-message">
+      Sorry, the page you are looking for could not be found.
+    </p>
+    <p>Perhaps it was removed or you entered the URL incorrectly.</p>
+    <section id="error-message">
+      <h2>{{ error_message }}</h2>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+/* Base styles for body */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: rgb(248, 196, 175);
+  font-family: "Lora", serif;
+}
+
+/* General Styles */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin-top: 30px;
+}
+
+/* Header */
+header {
+  padding: 20px 0;
+  text-align: center;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+}
+
+/* a {
+  font-size: 20px;
+} */
+
+/* h1 {
+  font-size: 2.5rem;
+  text-align: center;
+} */
+
+/* Hero Image Section */
+#hero-images {
+  display: flex; /* Enable Flexbox */
+  justify-content: space-evenly; /* Center the images */
+  gap: 1%; /* Add space between images */
+  padding: 1%;
+  margin: 1%;
+}
+
+#hero-images img {
+  width: 33%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: solid 3px white;
+}
+
+#searchdiv {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+
+.list-group-item {
+  margin: 0.08em;
+}
+
+.user-interaction {
+  padding: 1%;
+  display: block;
+  margin: 1%;
+  gap: 3%;
+  align-content: center;
+}
+
+#searchbox {
+  display: block;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  min-width: 45%;
+}
+
+#subheaders li {
+  border-bottom: 1px solid white;
+  gap: 20%;
+  font-size: 1.25rem;
+  color: #333; /* Dark text color for readability */
+  padding: 2%;
+}
+
+#subheaders {
+  display: flex;
+  justify-content: center;
+  align-items: flex;
+  margin: 1%;
+}
+
+input {
+  border: 2px solid white;
+}
+
+ul {
+  list-style: none; /* Removes bullets or numbers */
+  padding-left: 0; /* Removes default left padding */
+  margin-left: 0; /* Ensures alignment */
+}
+
+/* Responsive Design: Adjust layout for smaller screens */
+@media (max-width: 768px) {
+  /* Hero image layout for smaller screens */
+  /* #hero-images {
+    flex-direction: column;
+    height: 80rem;
+  }
+
+  #hero-images img {
+    width: 100%;
+    height: 32%;
+  } */
+
+  /* Subheaders (recipe titles) layout for smaller screens */
+  #subheaders {
+    flex-direction: column; /* Stack items vertically */
+    gap: 15px; /* Reduce space between items */
+  }
+
+  #subheaders ol {
+    padding-left: 0;
+  }
+
+  #subheaders li {
+    font-size: 1.1rem; /* Adjust font size for better readability */
+  }
+}

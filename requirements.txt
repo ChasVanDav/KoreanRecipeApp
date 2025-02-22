@@ -1,0 +1,12 @@
+# Run: pip3 install -r requirements.txt
+
+Flask
+Flask-SQLAlchemy
+psycopg2-binary
+google-api-python-client
+python-dotenv
+requests
+requests-mockpytho
+bs4
+sqlalchemy-utils
+flask-limiter
