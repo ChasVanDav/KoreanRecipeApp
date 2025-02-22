@@ -1,4 +1,4 @@
-# 🍜 Korean Recipes & Top YT Videos
+# 🍜 Korean Recipe App
 
 This is a Flask-based web application that scrapes **Korean recipe titles** from a CNN article and automatically fetches relevant **YouTube cooking videos**. Users can view recipe details, watch embedded videos, and explore metadata such as views, channel name, and publish date.
 
@@ -55,8 +55,8 @@ This is a Flask-based web application that scrapes **Korean recipe titles** from
 ### 1️⃣ Clone the Repository
 
 ```sh
-git clone https://github.com/ChasVanDav/YouTube-Video-Details-Scraper-App.git
-cd YouTube-Video-Details-Scraper-App
+git clone https://github.com/ChasVanDav/KoreanRecipeApp.git
+cd KoreanRecipeApp
 ```
 
 ### 2️⃣ Create a Virtual Environment & Install Dependencies
