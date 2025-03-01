@@ -33,15 +33,6 @@ header {
   font-weight: 700;
 }
 
-/* a {
-  font-size: 20px;
-} */
-
-/* h1 {
-  font-size: 2.5rem;
-  text-align: center;
-} */
-
 /* Hero Image Section */
 #hero-images {
   display: flex; /* Enable Flexbox */
@@ -59,11 +50,24 @@ header {
   border: solid 3px white;
 }
 
-#searchdiv {
+#forusers {
   display: flex;
   justify-content: space-evenly;
-  flex-direction: row;
 }
+
+#forusers div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+}
+
+/* form {
+  display: flex;
+} */
 
 .list-group-item {
   margin: 0.08em;
@@ -71,18 +75,10 @@ header {
 
 .user-interaction {
   padding: 1%;
-  display: block;
   margin: 1%;
   gap: 3%;
   align-content: center;
-}
-
-#searchbox {
-  display: block;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-  min-width: 45%;
+  display: flex;
 }
 
 #subheaders li {
@@ -112,17 +108,6 @@ ul {
 
 /* Responsive Design: Adjust layout for smaller screens */
 @media (max-width: 768px) {
-  /* Hero image layout for smaller screens */
-  /* #hero-images {
-    flex-direction: column;
-    height: 80rem;
-  }
-
-  #hero-images img {
-    width: 100%;
-    height: 32%;
-  } */
-
   /* Subheaders (recipe titles) layout for smaller screens */
   #subheaders {
     flex-direction: column; /* Stack items vertically */
@@ -136,4 +121,11 @@ ul {
   #subheaders li {
     font-size: 1.1rem; /* Adjust font size for better readability */
   }
+}
+
+.recipe-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }

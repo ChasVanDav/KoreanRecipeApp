@@ -61,26 +61,19 @@
         alt="bulgogi"
       />
     </section>
-    <!-- search the database for recipes -->
-    <div
-      id="searchdiv"
-      style="
-        margin: 1%;
+    <section id="forusers">
+      <!-- search the database for recipes -->
 
-        padding: 1%;
-      "
-    >
       <div
         id="searchbox"
         style="
           background-color: rgb(248, 196, 175);
           padding: 1%;
-          display: inline-flexbox;
           margin: 1%;
           border: 3px solid white;
         "
       >
-        <h2>Search Vanessa's Recipe Database</h2>
+        <h5>Search Vanessa's Kitchen</h5>
         <input
           type="text"
           id="searchInput"
@@ -88,18 +81,63 @@
           class="form-control-lg"
         />
       </div>
+
+      <!-- advanced search - double filter  -->
+
       <div
+        class="filter-container"
         style="
           background-color: rgb(248, 196, 175);
           padding-bottom: 1%;
-          display: inline-flexbox;
+
           margin: 1%;
           border: 3px solid white;
         "
       >
-        <h3 style="margin-left: 1%; padding-top: 1%">
+        <div>
+          <h5>Filter by Flavor Profile</h5>
+          <select id="flavor_profile" class="form-select">
+            <option value="">Select Flavor Profile</option>
+            <option value="spicy">Spicy</option>
+            <option value="sweet">Sweet</option>
+            <option value="salty">Salty</option>
+            <option value="mild">Mild</option>
+          </select>
+        </div>
+        <div>
+          <h5>Filter by Meat Type</h5>
+          <select id="meat_type" class="form-select">
+            <option value="">Select Meat Type</option>
+            <option value="chicken">Chicken</option>
+            <option value="seafood">Seafood</option>
+            <option value="vegetables">Vegetables</option>
+            <option value="beef">Beef</option>
+            <option value="pork">Pork</option>
+          </select>
+        </div>
+        <div>
+          <button
+            id="advancedSearchBtn"
+            class="btn btn-outline-primary btn-lg mt-3"
+          >
+            Apply Filters
+          </button>
+        </div>
+      </div>
+
+      <!-- submit user photos  -->
+      <div
+        style="
+          background-color: rgb(248, 196, 175);
+          padding-bottom: 1%;
+
+          margin: 1%;
+          border: 3px solid white;
+        "
+      >
+        <h5 style="margin-left: 1%; padding-top: 1%">
           Submit your best recipe photos for a chance to be featured!
-        </h3>
+        </h5>
         <form
           style="padding: 1%"
           action="/upload_image"
@@ -131,8 +169,11 @@
           />
         </form>
       </div>
-    </div>
+      <!-- end  -->
+    </section>
     <!-- end -->
+
+    <!-- search results  -->
     <ul id="searchResults" class="list-group mt-3"></ul>
 
     <section id="subheaders">
@@ -144,42 +185,30 @@
             padding: 1%;
           "
         >
-          <div style="padding: 1%" ; margin-left:2%>
+          <div style="padding: 1%" ; margin-left:2% class="recipe-top">
             <a href="/">Jump to Page 1</a>
-          </div>
-
-          <!-- Pagination Controls -->
-          <div class="pagination" style="text-align: center; margin: 2%">
-            {% if page > 1 %}
-            <a
-              href="{{ url_for('home', page=page-1) }}"
-              class="btn btn-outline-secondary btn-lg"
-              >Previous</a
-            >
-            {% endif %}
-
-            <span style="margin: 0.5%"
-              ><h4>Page {{ page }} of {{ total_pages }}</h4></span
-            >
-
-            {% if page < total_pages %}
-            <a
-              href="{{ url_for('home', page=page+1) }}"
-              class="btn btn-outline-secondary btn-lg"
-              >Next</a
-            >
-            {% endif %}
+            <div>
+              <a
+                href="{{ url_for('export_csv') }}"
+                class="btn btn-outline-primary"
+                >Export Recipes as CSV</a
+              >
+            </div>
           </div>
 
           <ul>
-            {% for subheader, content in recipes %}
+            {% for subheader, content, recipe_id in recipes %}
             <li id="recipe-{{ subheader | replace(' ', '-') }}">
               <h2>{{ subheader }}</h2>
               <p>{{ content }}</p>
 
+              <!-- Display Recipe ID -->
+              <p><strong>Recipe ID:</strong> {{ recipe_id }}</p>
+              <!-- This is the only change -->
+
               <!-- Edit Button -->
               <a
-                href="{{ url_for('edit_recipe', recipe_id=loop.index) }}"
+                href="{{ url_for('edit_recipe', recipe_id=recipe_id) }}"
                 class="btn btn-outline-secondary"
               >
                 Edit
@@ -187,7 +216,7 @@
 
               <!-- Delete Button -->
               <form
-                action="{{ url_for('delete_recipe', recipe_id=loop.index) }}"
+                action="{{ url_for('delete_recipe', recipe_id=recipe_id) }}"
                 method="POST"
                 style="display: inline"
               >
@@ -220,6 +249,28 @@
             {% endfor %}
           </ul>
         </div>
+        <!-- Pagination Controls -->
+        <div class="pagination" style="text-align: center; margin: 2%">
+          {% if page > 1 %}
+          <a
+            href="{{ url_for('home', page=page-1) }}"
+            class="btn btn-outline-secondary btn-lg"
+            >Previous</a
+          >
+          {% endif %}
+
+          <span style="margin: 0.5%"
+            ><h4>Page {{ page }} of {{ total_pages }}</h4></span
+          >
+
+          {% if page < total_pages %}
+          <a
+            href="{{ url_for('home', page=page+1) }}"
+            class="btn btn-outline-secondary btn-lg"
+            >Next</a
+          >
+          {% endif %}
+        </div>
       </section>
     </section>
 
@@ -251,7 +302,7 @@
                     // Format the title to match the recipe section's ID
                     let recipeId = `recipe-${recipe.title.replace(/\s+/g, "-")}`
 
-                    li.innerHTML = `<a href="/?page=${recipe.page}#${recipeId}"><strong>${recipe.title}</strong>: ${recipe.description}</a>`
+                    li.innerHTML = `<a href="/?page=${recipe.page}#${recipeId}"><strong>${recipe.title}</strong></a>: ${recipe.description}`
 
                     resultsList.appendChild(li)
                   })
@@ -260,6 +311,82 @@
           } else {
             document.getElementById("searchResults").innerHTML = ""
           }
+        })
+
+      // Advanced Search (Double Filter Search)
+      document
+        .getElementById("advancedSearchBtn")
+        .addEventListener("click", function () {
+          let flavorProfile = document.getElementById("flavor_profile").value
+          let meatType = document.getElementById("meat_type").value
+
+          let searchParams = new URLSearchParams()
+          searchParams.append("flavor_profile", flavorProfile)
+          searchParams.append("meat_type", meatType)
+
+          console.log("Searching with params:", searchParams.toString()) // Debugging
+
+          fetch(`/double_filter_search?${searchParams.toString()}`)
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Search results received:", data) // Debugging
+
+              let resultsList = document.getElementById("searchResults")
+              resultsList.innerHTML = ""
+
+              if (!data.results || data.results.length === 0) {
+                console.log("No results found.") // Debugging
+                resultsList.innerHTML =
+                  "<li class='list-group-item'>No results found</li>"
+              } else {
+                data.results.forEach((recipe, index) => {
+                  console.log(`Processing recipe ${index + 1}:`, recipe) // Debugging
+
+                  let li = document.createElement("li")
+                  li.className = "list-group-item"
+
+                  let recipeId = `recipe-${recipe.title.replace(/\s+/g, "-")}`
+
+                  // Ensure recipe.id is a valid number
+                  console.log(
+                    "Raw Recipe ID:",
+                    recipe.id,
+                    "Type:",
+                    typeof recipe.id
+                  )
+
+                  let cleanId =
+                    typeof recipe.id === "string"
+                      ? recipe.id.trim()
+                      : String(recipe.id)
+                  console.log("Trimmed Recipe ID:", cleanId)
+
+                  let recipeIdNumber = NaN
+                  if (/^\d+$/.test(cleanId)) {
+                    recipeIdNumber = parseInt(cleanId, 10) // Convert to integer
+                  } else {
+                    console.error(
+                      "Invalid recipe ID (not a number):",
+                      recipe.id
+                    )
+                  }
+
+                  console.log("Parsed Recipe ID:", recipeIdNumber)
+
+                  let pageNumber =
+                    isNaN(recipeIdNumber) || recipeIdNumber <= 0
+                      ? 1
+                      : Math.ceil(recipeIdNumber / 5)
+                  console.log("Calculated page number:", pageNumber) // Debugging
+
+                  li.innerHTML = `<a href="/?page=${pageNumber}#${recipeId}"><strong>${recipe.title}</strong></a>: ${recipe.description}`
+                  resultsList.appendChild(li)
+                })
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching search results:", error)
+            })
         })
     </script>
 

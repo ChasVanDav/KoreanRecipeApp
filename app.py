@@ -10,6 +10,8 @@ from database import SessionLocal
 import io
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+import pandas as pd
+from sqlalchemy import create_engine
 
 # Load environment variables
 load_dotenv()
@@ -17,6 +19,13 @@ load_dotenv()
 # Flask app setup
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
+
+
+# Load the database URL from environment variable
+DATABASE_URL = os.getenv('DATABASE_URL') 
+
+# Create the engine instance
+engine = create_engine(DATABASE_URL)
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -40,10 +49,13 @@ def home():
         per_page = 5
         offset = (page - 1) * per_page
 
-        recipes = session.query(Recipe.recipe_title, Recipe.recipe_content)\
+        # Include the recipe_id in the query
+        recipes = session.query(Recipe.id, Recipe.recipe_title, Recipe.recipe_content)\
                         .order_by(Recipe.id)\
                         .offset(offset).limit(per_page).all()
-        cleaned_recipes = [(clean_subheader(title), content) for title, content in recipes]
+        
+        # Now recipes will have (id, title, content)
+        cleaned_recipes = [(clean_subheader(title), content, recipe_id) for recipe_id, title, content in recipes]
 
         total_recipes = session.query(Recipe).count()
         total_pages = (total_recipes + per_page - 1) // per_page
@@ -56,6 +68,7 @@ def home():
 
     finally:
         session.close()
+
 
 
 @app.route("/search", methods=["GET"])
@@ -83,10 +96,66 @@ def search():
                     "description": recipe.recipe_content,
                     "page": page
                 })
-
-
-
     return jsonify(paginated_results)
+
+@app.route('/double_filter_search', methods=['GET'])
+def double_filter_search():
+    # Get flavor profile and meat type from request args
+    flavor_profile = request.args.get('flavor_profile', '')
+    meat_type = request.args.get('meat_type', '')
+    query = request.args.get('q', '').strip() 
+
+    per_page = 5
+
+    try:
+        with SessionLocal() as session:
+            # Start building the query
+            query_db = session.query(Recipe.id, Recipe.recipe_title, Recipe.recipe_content).order_by(Recipe.id)
+            
+            # Apply filters
+            if flavor_profile:
+                query_db = query_db.filter(Recipe.recipe_content.ilike(f'%{flavor_profile}%'))
+            if meat_type:
+                query_db = query_db.filter(Recipe.recipe_content.ilike(f'%{meat_type}%'))
+            if query:
+                query_db = query_db.filter(Recipe.search_vector.match(query))
+
+            # Fetch the filtered results
+            indexed_recipes = query_db.all()
+
+            # Paginate results
+            page = int(request.args.get('page', 1))  # Default to page 1
+            start_index = (page - 1) * per_page
+            end_index = start_index + per_page
+
+            paginated_results = indexed_recipes[start_index:end_index]
+
+            # Prepare the response data
+            results = []
+            for recipe in paginated_results:
+                index = indexed_recipes.index(recipe)
+                page_number = (index // per_page) + 1  # Calculate the page number for each recipe
+                results.append({
+                    "id": recipe.id, 
+                    "title": recipe.recipe_title,
+                    "description": recipe.recipe_content,
+                    "page": page_number
+                })
+
+            # Total pages based on the number of results
+            total_pages = (len(indexed_recipes) + per_page - 1) // per_page
+
+            return jsonify({
+                "results": results,
+                "total_pages": total_pages,
+                "current_page": page
+            })
+
+    except Exception as e:
+        logging.error(f"Error in double filter search route: {e}")
+        return jsonify({'error': 'An error occurred while processing the search.'})
+
+
 
 
 # TESTING BACKEND DATABASE CALLS
@@ -230,6 +299,30 @@ def delete_recipe(recipe_id):
 
     finally:
         session.close()
+
+
+@app.route("/export_csv")
+def export_csv():
+    try:
+        query = "SELECT id, recipe_title, recipe_content, video_id, video_url, video_title, video_metadata FROM recipe"
+        df = pd.read_sql(query, engine)  # Load data into DataFrame
+
+        if df.empty:
+            logging.warning("Attempted CSV export, but the recipe table is empty.")
+            return render_template("error.html", message="No recipes found to export."), 404
+
+        csv_data = df.to_csv(index=False)  # Convert to CSV format
+        response = Response(csv_data, mimetype="text/csv")
+        response.headers["Content-Disposition"] = "attachment; filename=recipe_export.csv"
+
+        return response
+
+    except Exception as e:
+        logging.error(f"Error exporting CSV: {e}", exc_info=True)
+        return render_template("500.html"), 500
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 
 # custom error handlers
