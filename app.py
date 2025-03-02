@@ -21,8 +21,18 @@ app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
 
 
-# Load the database URL from environment variable
-DATABASE_URL = os.getenv('DATABASE_URL') 
+# Check if the app is running locally or on Render
+environment = os.getenv('ENVIRONMENT', 'local')  # Default to 'local' if ENVIRONMENT is not set
+
+# Load the database URL based on the environment
+DATABASE_URL = os.getenv('DATABASE_URL')  # Both local and Render should provide this variable
+
+# Optional: You can log or print the environment for debugging purposes
+print(f"App is running in {environment} mode.")
+
+# Ensure the DATABASE_URL is set
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL is not set. Please set it in the environment variables.")
 
 # Create the engine instance
 engine = create_engine(DATABASE_URL)
