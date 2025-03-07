@@ -114,7 +114,7 @@ Access the app at: `http://127.0.0.1:5000/`
 
 This project is licensed under the MIT License.
 
-## Reflection on What I Have Learned
+## ✨Reflection on What I Have Learned
 
 This project has taught me so much and has helped me grow as a developer in many ways. As you have seen earlier in this document, this project packs A LOT including webscraping, API routes, options to upload images, export data as a CSV file, pagination, and much more. One of my proudest moments often happened late into the night after spending hours debugging. Setting up the Youtube API route was probably the most difficult and happiest aspect of this project. My least favorite was tussling with pagination and testing. All in all, it was a really great experience to see what I could do and how quickly I could adapt to new and evolving requirements.
 
