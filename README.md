@@ -133,4 +133,9 @@ Database deployment was where I was having the most trouble. I was struggling to
 - This environment variable needs to be copy/pasted to the web service environment variables (NOT LOCAL DATABASE VALUES 🙄)
 - The database instance is EMPTY! --> So I needed to do a `pg_restore` to populate the data in my local database into this instance.
 
+Once, I figured all of that out, it was good to go and I felt so accomplished!
+
+That pretty much sums up the lovely roller coaster that is developing.
+I enjoyed this one and will be working more on it when I have free time, to make it better! I have several stretch goals, including adding users, ingredient list, including AI to pick a Korean recipe based on the ingredients you already have, and much more. Feel free to contribute, I would love that!
+
 Thanks for reading my stream-of-consciousness!✨
