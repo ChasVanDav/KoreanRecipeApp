@@ -41,7 +41,7 @@ engine = create_engine(DATABASE_URL)
 logging.basicConfig(level=logging.DEBUG)
 
 # Initialize rate limiter
-limiter = Limiter(get_remote_address, app=app, default_limits=["100 per hour"])
+limiter = Limiter(get_remote_address, app=app, default_limits=["100 per minute"])
 
 
 def clean_subheader(title):
@@ -50,7 +50,7 @@ def clean_subheader(title):
 
 
 @app.route('/')
-@limiter.limit("10 per minute")  # Limit homepage requests
+@limiter.limit("100 per minute")  # Limit homepage requests
 def home():
     logging.debug('Home page is loading...')
     session = SessionLocal()
@@ -211,7 +211,7 @@ def double_filter_search():
 
 
 @app.route('/video_data/<string:title>', methods=['GET'])
-@limiter.limit("5 per minute")  # Limit YouTube API calls
+@limiter.limit("10 per minute")  # Limit YouTube API calls
 def get_video_data(title):
     with SessionLocal() as session:
         recipe = session.query(Recipe).filter(Recipe.recipe_title == title).first()
