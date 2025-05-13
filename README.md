@@ -2,8 +2,6 @@
 
 This is a Flask-based web application where users can **browse, search, and manage Korean recipes**. The app scrapes **Korean recipe titles** from a CNN article and automatically fetches the related **YouTube cooking video** with the highest views. Users can **upload images, edit, delete, and export recipe data**, making it a comprehensive tool for discovering and organizing Korean dishes.
 
-### 🚀 Deployed on Render [here](https://koreanrecipeapp.onrender.com).
-
 ### What Users Can Do
 
 - Explore a curated list of Korean recipes automatically gathered from a trusted source.
